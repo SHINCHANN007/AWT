@@ -1,0 +1,174 @@
+imp [ 
+      npm -y init 
+      npm i
+]
+
+user.json
+[{ ...},
+{ ...}
+]
+
+
+i) Synchronously Reads the Entire Contents of a File:
+
+const fs = require("fs");
+const a = fs.readFileSync("sample.txt", "utf-8");
+console.log("Reading File Synchronously");
+console.log(a);
+console.log("----------------------\n");
+
+
+
+ii) Asynchronously Reads the Entire Contents of a File:
+
+fs.readFile("sample.txt", "utf-8", (err, data) => {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log("Reading File Asynchronously");
+        console.log(data);
+        console.log("----------------------\n");
+    }
+});
+
+
+
+iii) Read the File Content in Async Function:
+
+async function readFile(file_path) {
+    try {
+        const data = await fs.promises.readFile(file_path, "utf-8");
+        console.log("Reading File Using Function");
+        console.log(data);
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+readFile("sample.txt");
+
+----------------------------------------------------------------------------------------------
+
+//WRITE APPEND BY KOOKYSTAN
+
+const fs = require("fs")
+
+// fs.writeFile("abc.txt","Pramod Sandeep Joshi","utf-8", (err)=>{
+//     if (err){
+//         console.log(err)
+//     }
+// })
+
+// fs.writeFileSync("abc.txt", "Amod Sandeep Joshi", "utf-8")
+
+// fs.appendFile("abc.txt","\nPramod","utf-8",(err)=>{
+//     if(err){
+//         console.log(err)
+//     }
+// })
+// 
+// fs.appendFileSync("abc.txt","\nAnurag","utf-8")
+
+// fs.rename("abc.txt","abcd.txt",(err)=>{
+//     if (err){
+//         console.log(err)
+//     }
+// })
+
+// fs.renameSync("a.txt","b.txt")
+
+fs.unlink("b.txt",(err)=>{
+    if(err){
+        console.log(err)
+    }
+})
+
+fs.unlinkSync("abcd.txt")
+
+------------------------------------------------------------------------------------------------
+//Writing a File: OF JSON
+
+//Create a File (example.txt), Add Content, Append Data, Rename File, and Delete File:
+
+const fs = require("fs/promises");
+
+const writeFunction = async () => {
+    try {
+        let data = await fs.readFile("example.json", "utf-8");
+        console.log(data);
+        newData = JSON.stringify([{ name: "Anurag", age: 20, email: "anuragjoshi090@gmail.com" }]);
+        await fs.writeFile("example.json", newData);
+        console.log("File Written Successfully");
+        console.log(newData);
+
+        const appendData = { name: "Anushka", age: 20, email: "sagvekaranushka4@gmail.com" };
+        data = await fs.readFile("example.json", "utf-8");
+        data = JSON.parse(data);
+        data.push(appendData);
+        await fs.writeFile("example.json", JSON.stringify(data));
+        await fs.rename("example.json", "example1.json");
+
+        const async_data = await fs.readFile("example1.json", "utf-8");
+        console.log("Appended Data");
+        console.log(async_data);
+
+        await fs.unlink("example1.json");
+        console.log("File Deleted Successfully");
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+writeFunction();
+
+
+----------------------------------------------------------------------------------------------------------------
+//User Input and Saving Data into a File with Custom Event:
+
+const fs = require("fs");
+const readline = require("readline");
+const events = require("events");
+
+const eventEmitter = new events.EventEmitter();
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+const handleInput = (input) => {
+    eventEmitter.emit("textReady", input);
+};
+
+eventEmitter.on("textReady", (text) => {
+    console.log("Custom Event is fired. Text ready with text: ", text);
+    fs.writeFileSync("custom.txt", text);
+    console.log("File Written Successfully");
+});
+
+rl.question("Enter Text: ", handleInput);
+
+----------------------------------------------------------------------------------------------------------
+
+HTTP Server with Node.js:
+
+const http = require("http");
+const hostname = "127.0.0.1";
+const port = 4000;
+
+const server = http.createServer((req, res) => {
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "text/plain");
+    
+    if (req.url === "/hello") {
+        res.end("Hello, World!");
+    } else if (req.url === "/about") {
+        res.end("This is a simple HTTP server");
+    } else {
+        res.end("404 Not Found");
+    }
+});
+
+server.listen(port, hostname, () => {
+    console.log(`Server running at http://${hostname}:${port}/`);
+});
+

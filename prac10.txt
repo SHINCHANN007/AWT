@@ -1,0 +1,166 @@
+[Install first:
+ 1) npm init -y
+ 2) npm install express mongoose]
+
+ThunderClient
+http://localhost:8000/
+
+add:
+{ 
+  "name":"Riddhi",
+  "age":21,
+  "email":"riddhi@gmail.com"
+  
+}
+
+patch:
+{
+    "name": "Riddhi Kasar",
+    "age":21
+  }
+
+to run:
+   node app.js
+
+
+Q1) Create a Node.js Program Using Express to Serve a List of Users from JSON File:
+
+
+const express = require("express")
+const app = express()
+const fs = require("fs")
+const user = JSON.parse(fs.readFileSync("user.json","utf-8"))
+
+app.use(express.json())
+
+app.get("/", (req,res) => {
+    res.json(user)
+})
+
+app.get("/:id", (req,res)=>{
+    const id = parseInt(req.params.id);
+    const foundUser = user.find((val)=> val.id == id)
+
+    if (foundUser){
+        res.json(foundUser)
+    }else{
+        res.json({msg: "User not found"})
+    }
+})
+
+app.post("/", (req,res) => {
+    const {id, username, password} = req.body;
+    const newUser = {id, username, password}
+    user.push(newUser)
+    fs.writeFile("user.json",JSON.stringify(user),"utf-8",(err)=>{
+        if (err){
+            res.json({msg: "Server Error"})
+        }else{
+            res.json(newUser)
+        }
+    })
+
+})
+
+app.put("/:id", (req,res)=>{
+    const id = parseInt(req.params.id);
+    const {username, password} = req.body;
+    const userToUpdate = user.find((val) => val.id === id)
+    if (!userToUpdate){
+        res.json({msg: "User not found"})
+        return
+    }
+    userToUpdate.username = username
+    userToUpdate.password = password
+
+    const newUsers = user.map((val) => (val.id === id ? userToUpdate : val) )
+    fs.writeFile("user.json",JSON.stringify(newUsers),"utf-8",(err)=>{
+        if (err){
+            res.json({msg: "Server Error"})
+        }else{
+            res.json(userToUpdate)
+        }
+    })
+    
+    
+})
+
+app.delete("/:id", (req,res)=>{
+    const id = parseInt(req.params.id)
+    const newUser = user.filter((val) => val.id !== id)
+    fs.writeFileSync("user.json", JSON.stringify(newUser), "utf-8")
+    res.json(newUser) 
+})
+app.listen(5000, ()=>{
+    console.log("Server is running on port 5000")
+})
+--------------------------------------------------------------------------------
+
+in cmd : mongosh
+
+get Uri from their
+
+Q2) Connect Node.js with MongoDB:
+a. Create a Database and Collection:
+
+const express = require("express")
+const app = express()
+const mongoose = require("mongoose")
+
+app.use(express.json())
+
+const userSchema = new mongoose.Schema(
+{
+    username: String,
+    age: {
+        type: Number,
+        min: 10,
+        max: 99
+    },
+    email: String
+}
+)
+
+const users = mongoose.model("user", userSchema)
+
+app.get("/", async (req,res) => {
+    const data = await users.find()
+    res.json(data)
+})
+
+app.get("/:username", async (req,res) => {
+    const username = req.params.username
+    const data = await users.find({username: username })
+    res.json(data)
+})
+
+app.post("/", async (req,res) => {
+    const {username,age,email} = req.body;
+    const user = {username,age,email}
+    await users.insertOne(user)
+    res.json(user)
+})
+
+app.post("/:username", async (req,res) => {
+    const username = req.params.username;
+    const {age,email} = req.body;
+    const newUser = {username, age,email}
+    await users.findOneAndUpdate({username: username},newUser)
+    res.json(newUser)
+})
+
+app.delete("/:username", async (req,res) => {
+    const username = req.params.username;
+
+    const user = await users.deleteOne({username:username})
+    res.json(user)
+})
+mongoose.connect("mongodb://localhost:27017/temp", {useNewURLParser: true, useUnifiedTopology: true}).then(
+    () => {
+        console.log('Connected to mongodb')
+    }
+)
+
+app.listen(5000, () => {
+    console.log("Server running on port 5000")
+})
