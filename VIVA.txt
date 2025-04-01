@@ -1,0 +1,671 @@
+Here are the potential viva questions along with their answers:
+
+## Practical 1: Components & Properties
+
+**Q: What's the difference between props in class components versus functional components?**
+A: In class components, props are accessed through `this.props`, while in functional components, they're received directly as function parameters. The usage is conceptually the same in both - props are read-only data passed from parent to child, but the syntax differs.
+
+**Q: How do you pass props from a parent to a child component?**
+A: Props are passed as attributes in JSX when rendering the child component. For example:
+```jsx
+// Parent component
+<ChildComponent name="John" age={25} />
+
+// Child component (functional)
+function ChildComponent(props) {
+  return <div>{props.name} is {props.age} years old</div>;
+}
+```
+
+**Q: Can props be modified by the component that receives them? Why or why not?**
+A: No, props are read-only. Modifying props directly violates React's one-way data flow principle. If a component needs to modify data received from props, it should store it in its state first, then modify the state.
+
+**Q: Explain prop validation and its importance.**
+A: Prop validation using PropTypes helps ensure that components receive the correct data types. It acts as documentation and helps catch bugs during development by warning when incorrect props are passed. Example:
+```jsx
+import PropTypes from 'prop-types';
+
+MyComponent.propTypes = {
+  name: PropTypes.string.isRequired,
+  age: PropTypes.number
+};
+```
+
+**Q: What are default props and how do you define them?**
+A: Default props are values used when a prop isn't explicitly provided. They're defined using the `defaultProps` property:
+```jsx
+MyComponent.defaultProps = {
+  age: 30
+};
+```
+Or in functional components with destructuring:
+```jsx
+function MyComponent({ name, age = 30 }) {
+  // ...
+}
+```
+
+## Practical 2: States in Class Components
+
+**Q: What is state in React and how is it different from props?**
+A: State is a JavaScript object that contains data private to a component and can change over time. Unlike props (which are passed from parent and immutable), state is managed within the component and can be updated using `setState()`.
+
+**Q: Explain the `setState()` method and why direct state mutation is discouraged.**
+A: `setState()` schedules an update to a component's state object and tells React the component needs re-rendering. Direct mutations like `this.state.count = 5` won't trigger re-renders and can lead to inconsistencies. Instead, always use:
+```jsx
+this.setState({ count: 5 });
+```
+
+**Q: Why are state updates in React sometimes asynchronous?**
+A: React batches state updates for performance reasons. When multiple `setState()` calls occur in the same event handler, React might batch them into a single update. To work with updated state values, use the functional form of setState:
+```jsx
+this.setState(prevState => ({ count: prevState.count + 1 }));
+```
+
+**Q: How would you handle multiple state variables in a class component?**
+A: In class components, multiple state variables are typically stored in a single state object:
+```jsx
+constructor(props) {
+  super(props);
+  this.state = {
+    name: '',
+    age: 0,
+    isActive: false
+  };
+}
+```
+Then update specific properties using `this.setState({ name: 'John' })`.
+
+**Q: Explain the difference between controlled and uncontrolled components.**
+A: Controlled components have their state controlled by React, where form data is stored in component state:
+```jsx
+<input value={this.state.value} onChange={this.handleChange} />
+```
+Uncontrolled components store form data in the DOM itself and are accessed using refs:
+```jsx
+<input ref={this.inputRef} />
+```
+
+## Practical 3: States in Functional Components
+
+**Q: What are React Hooks and why were they introduced?**
+A: Hooks are functions that let you "hook into" React state and lifecycle features from functional components. They were introduced to allow using state and other React features without writing classes, making code more reusable and testable.
+
+**Q: Compare `useState` and `useReducer`. When would you use one over the other?**
+A: `useState` is simpler and good for independent state values. `useReducer` is preferable for complex state logic involving multiple sub-values or when the next state depends on the previous one. Use `useReducer` when state transitions are complex or you have related state values.
+
+**Q: Can you explain the syntax and working of the `useState` hook?**
+A: `useState` returns a stateful value and a function to update it:
+```jsx
+const [count, setCount] = useState(0);
+```
+Here, `0` is the initial state, `count` is the current state value, and `setCount` is the function to update the state. When `setCount` is called, the component re-renders with the new state.
+
+**Q: What's the equivalent of class component's state in functional components?**
+A: The `useState` hook is the equivalent. Multiple `useState` calls can be used for different state variables:
+```jsx
+const [name, setName] = useState('');
+const [age, setAge] = useState(0);
+const [isActive, setIsActive] = useState(false);
+```
+
+**Q: What are the rules of using Hooks in React?**
+A: 1) Only call Hooks at the top level of your function, not inside loops, conditions, or nested functions.
+   2) Only call Hooks from React function components or custom Hooks, not regular JavaScript functions.
+
+## Practical 4: Component Lifecycle
+
+**Q: Explain the three phases of a React component's lifecycle.**
+A: 1) Mounting: Component is being created and inserted into the DOM (constructor, render, componentDidMount)
+   2) Updating: Component is re-rendering due to changes in props or state (render, componentDidUpdate)
+   3) Unmounting: Component is being removed from the DOM (componentWillUnmount)
+
+**Q: Which lifecycle methods are called during the mounting phase?**
+A: In class components: constructor, static getDerivedStateFromProps, render, componentDidMount.
+   In functional components: The entire function runs, and useEffect with empty dependency array runs after first render.
+
+**Q: How do you implement componentDidUpdate functionality in functional components?**
+A: Use useEffect with a dependency array that includes the values you want to watch for changes:
+```jsx
+useEffect(() => {
+  // This code runs after every render when count changes
+  console.log('Count updated');
+}, [count]);
+```
+
+**Q: What is the purpose of the componentWillUnmount method?**
+A: It's used for cleanup operations before a component is removed from the DOM, such as:
+- Canceling network requests
+- Removing event listeners
+- Clearing timers
+This prevents memory leaks.
+
+**Q: Compare lifecycle methods in class components with useEffect in functional components.**
+A: - componentDidMount: useEffect(() => {}, [])
+   - componentDidUpdate: useEffect(() => {}, [dependencies])
+   - componentWillUnmount: useEffect(() => { return () => {} }, [])
+   useEffect combines all three lifecycle methods into one API, with the cleanup function handling unmounting.
+
+## Practical 5: Event Handling
+
+**Q: How do you handle events in React?**
+A: React events are named using camelCase and passed as functions:
+```jsx
+<button onClick={handleClick}>Click me</button>
+```
+Event handlers receive a synthetic event object that works across browsers.
+
+**Q: Explain the difference between HTML event handling and React event handling.**
+A: 1) React uses camelCase (onClick vs onclick)
+   2) React passes functions instead of strings
+   3) React events are synthetic events that work consistently across browsers
+   4) In React you can't return false to prevent default behavior; you must call preventDefault()
+
+**Q: Why do we need to bind event handlers in class components?**
+A: Because in JavaScript, class methods aren't bound by default. Without binding, `this` will be undefined when the function is called. Solutions include:
+```jsx
+// In constructor
+this.handleClick = this.handleClick.bind(this);
+
+// Using arrow function in render
+onClick={() => this.handleClick()}
+
+// Using class property with arrow function
+handleClick = () => {
+  // this is accessible
+}
+```
+
+**Q: How would you prevent default form submission behavior in React?**
+A: Using the preventDefault() method:
+```jsx
+function handleSubmit(e) {
+  e.preventDefault();
+  // handle form submission
+}
+```
+
+**Q: Explain how you would handle adding and removing elements from an array using state.**
+A: Always use immutable operations:
+```jsx
+// Adding to array
+setItems([...items, newItem]);
+
+// Removing from array
+setItems(items.filter(item => item.id !== id));
+
+// Updating an item in array
+setItems(items.map(item => 
+  item.id === id ? { ...item, done: true } : item
+));
+```
+
+## Practical 6: useEffect Hook
+
+**Q: What is the purpose of the useEffect hook?**
+A: useEffect lets you perform side effects in functional components. It's used for data fetching, subscriptions, manual DOM manipulations, and other operations that might affect components outside of the React flow.
+
+**Q: How can you mimic componentDidMount, componentDidUpdate, and componentWillUnmount with useEffect?**
+A: ```jsx
+// componentDidMount
+useEffect(() => {
+  // Code runs after first render only
+}, []);
+
+// componentDidUpdate for specific props/state
+useEffect(() => {
+  // Code runs after every render when dependencies change
+}, [prop1, prop2]);
+
+// componentWillUnmount
+useEffect(() => {
+  return () => {
+    // Cleanup code runs before component unmounts
+  };
+}, []);
+```
+
+**Q: Explain the dependency array in useEffect and its significance.**
+A: The dependency array tells React when to re-run the effect:
+- Empty array `[]`: Run once after first render (componentDidMount)
+- With dependencies `[a, b]`: Run when any dependency changes
+- No array: Run after every render
+- The dependency array helps optimize performance by avoiding unnecessary effect executions.
+
+**Q: What are the common use cases for useEffect?**
+A: - Data fetching
+   - Setting up subscriptions or event listeners
+   - Changing the DOM directly
+   - Logging
+   - Timers and intervals
+   - Synchronizing with external systems
+
+**Q: How would you handle cleanup operations in useEffect?**
+A: Return a cleanup function from your effect:
+```jsx
+useEffect(() => {
+  const subscription = someAPI.subscribe();
+  
+  return () => {
+    // Cleanup function
+    subscription.unsubscribe();
+  };
+}, [someAPI]);
+```
+This cleanup runs before the component unmounts and before the effect runs again if dependencies change.
+
+## Practical 7: useRef and useContext Hooks
+
+**Q: What is the purpose of the useRef hook and how is it different from useState?**
+A: useRef creates a mutable object with a `.current` property that persists across renders without causing re-renders when changed. It's used for:
+- Accessing DOM elements directly
+- Storing mutable values that don't require re-rendering
+- Preserving values between renders without triggering updates
+
+Unlike useState, changing a ref doesn't trigger a re-render.
+
+**Q: How can you access DOM elements using useRef?**
+A: ```jsx
+function TextInputWithFocusButton() {
+  const inputRef = useRef(null);
+  
+  const focusInput = () => {
+    inputRef.current.focus();
+  };
+
+  return (
+    <>
+      <input ref={inputRef} type="text" />
+      <button onClick={focusInput}>Focus Input</button>
+    </>
+  );
+}
+```
+
+**Q: Explain the Context API and its components (Provider, Consumer).**
+A: Context provides a way to pass data through the component tree without passing props manually at every level.
+- `Context.Provider` wraps components that need access to the context value
+- `Context.Consumer` (older API) or `useContext` hook (newer API) is used to access the context value
+
+```jsx
+const ThemeContext = React.createContext('light');
+
+function App() {
+  return (
+    <ThemeContext.Provider value="dark">
+      <ThemedButton />
+    </ThemeContext.Provider>
+  );
+}
+
+function ThemedButton() {
+  const theme = useContext(ThemeContext);
+  return <button className={theme}>Themed Button</button>;
+}
+```
+
+**Q: What problem does useContext solve?**
+A: It solves "prop drilling" - the need to pass props through many layers of components. Context lets you share values like themes, user data, and localization between components without explicitly passing props through every level.
+
+**Q: What is useImperativeHandle and when would you use it?**
+A: useImperativeHandle customizes the instance value exposed when using refs on a child component. It's used when a parent component needs to call methods on a child component. It's useful for:
+- Creating custom component APIs
+- Exposing only specific functionality to parent components
+- Implementing more advanced parent-child interactions
+
+```jsx
+function FancyInput(props, ref) {
+  const inputRef = useRef();
+  
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      inputRef.current.focus();
+    }
+  }));
+  
+  return <input ref={inputRef} />;
+}
+
+FancyInput = forwardRef(FancyInput);
+```
+
+## Practical 8: React Routing
+
+**Q: What is React Router and why is it used?**
+A: React Router is a standard library for routing in React applications. It enables navigation between views, allows bookmarking of specific pages, and provides a way to build single-page applications with navigable routes without page refreshes.
+
+**Q: Explain the difference between BrowserRouter and HashRouter.**
+A: - BrowserRouter uses HTML5 history API to keep UI in sync with the URL (`example.com/users`)
+   - HashRouter uses the hash portion of the URL (`example.com/#/users`)
+   - BrowserRouter requires server configuration to handle routes properly
+   - HashRouter works without special server configuration but looks less clean
+
+**Q: What are Route parameters and how do you access them?**
+A: Route parameters are dynamic segments of the URL used to pass data between routes. They're defined with a colon in the route path and accessed with the useParams hook:
+
+```jsx
+// Route definition
+<Route path="/users/:userId" element={<UserProfile />} />
+
+// In UserProfile component
+function UserProfile() {
+  const { userId } = useParams();
+  return <div>User ID: {userId}</div>;
+}
+```
+
+**Q: How do you implement nested routing in React Router?**
+A: Nested routes are defined using the `<Outlet />` component which renders child routes:
+
+```jsx
+function App() {
+  return (
+    <Routes>
+      <Route path="/dashboard" element={<Dashboard />}>
+        <Route path="profile" element={<Profile />} />
+        <Route path="settings" element={<Settings />} />
+      </Route>
+    </Routes>
+  );
+}
+
+function Dashboard() {
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <nav>
+        <Link to="profile">Profile</Link>
+        <Link to="settings">Settings</Link>
+      </nav>
+      <Outlet /> {/* Child routes render here */}
+    </div>
+  );
+}
+```
+
+**Q: Explain programmatic navigation in React Router.**
+A: Programmatic navigation is done using the `useNavigate` hook:
+
+```jsx
+import { useNavigate } from 'react-router-dom';
+
+function LoginForm() {
+  const navigate = useNavigate();
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Login logic...
+    navigate('/dashboard'); // Navigate after login
+  };
+  
+  return <form onSubmit={handleSubmit}>...</form>;
+}
+```
+
+## Practical 9: Node.js File Operations
+
+**Q: What's the difference between synchronous and asynchronous file operations in Node.js?**
+A: - Synchronous operations block execution until completed (fs.readFileSync)
+   - Asynchronous operations don't block and use callbacks, promises, or async/await (fs.readFile)
+   - Sync methods end with "Sync" and return results directly
+   - Async methods take a callback or return a Promise
+
+**Q: How do you handle errors in asynchronous file operations?**
+A: Using callbacks:
+```javascript
+fs.readFile('file.txt', (err, data) => {
+  if (err) {
+    console.error('Error reading file:', err);
+    return;
+  }
+  console.log(data);
+});
+```
+
+Using promises:
+```javascript
+fs.promises.readFile('file.txt')
+  .then(data => console.log(data))
+  .catch(err => console.error('Error reading file:', err));
+```
+
+Using async/await:
+```javascript
+async function readFile() {
+  try {
+    const data = await fs.promises.readFile('file.txt');
+    console.log(data);
+  } catch (err) {
+    console.error('Error reading file:', err);
+  }
+}
+```
+
+**Q: Explain the Event Emitter pattern in Node.js.**
+A: Event Emitter is a core Node.js module that facilitates communication between objects. It follows the observer pattern where objects can subscribe to and emit named events:
+
+```javascript
+const EventEmitter = require('events');
+const myEmitter = new EventEmitter();
+
+// Register event listener
+myEmitter.on('event', (arg) => {
+  console.log('Event triggered with:', arg);
+});
+
+// Emit event
+myEmitter.emit('event', 'data');
+```
+
+This pattern is fundamental to Node's asynchronous, event-driven architecture.
+
+**Q: What are streams in Node.js and when would you use them?**
+A: Streams are objects that let you read data from a source or write data to a destination in continuous fashion. They're used for:
+- Processing large files without loading entirely into memory
+- Real-time data processing (like video streaming)
+- Network communications
+
+Types of streams:
+- Readable: for reading (fs.createReadStream)
+- Writable: for writing (fs.createWriteStream)
+- Duplex: both readable and writable
+- Transform: modifies data while reading/writing
+
+**Q: How would you create a simple HTTP server in Node.js?**
+A: ```javascript
+const http = require('http');
+
+const server = http.createServer((req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('Hello World\n');
+});
+
+server.listen(3000, 'localhost', () => {
+  console.log('Server running at http://localhost:3000/');
+});
+```
+
+## Practical 10: Express and MongoDB
+
+**Q: What is Express.js and what advantages does it offer over plain Node.js?**
+A: Express.js is a web application framework for Node.js that provides:
+- Simplified routing system
+- Middleware support for request/response processing
+- Template engine integration
+- Easier handling of HTTP methods and URLs
+- Built-in error handling
+- Parameter handling in URLs
+
+It reduces boilerplate code and makes building APIs and web applications more straightforward.
+
+**Q: Explain the concept of middleware in Express.**
+A: Middleware functions have access to the request, response objects, and the next middleware function. They can:
+- Execute code
+- Modify request and response objects
+- End the request-response cycle
+- Call the next middleware
+
+```javascript
+app.use((req, res, next) => {
+  console.log('Time:', Date.now());
+  next(); // Pass control to next middleware
+});
+```
+
+Common middleware includes error handlers, authentication, body parsers, and loggers.
+
+**Q: How do you handle different HTTP methods in Express?**
+A: Express provides methods corresponding to HTTP verbs:
+```javascript
+app.get('/users', (req, res) => {
+  // Handle GET request
+});
+
+app.post('/users', (req, res) => {
+  // Handle POST request
+});
+
+app.put('/users/:id', (req, res) => {
+  // Handle PUT request
+});
+
+app.delete('/users/:id', (req, res) => {
+  // Handle DELETE request
+});
+```
+
+**Q: Explain how to connect Node.js with MongoDB using Mongoose.**
+A: ```javascript
+const mongoose = require('mongoose');
+
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/myapp', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('Connected to MongoDB'))
+.catch(err => console.error('Connection error:', err));
+
+// Define a schema
+const userSchema = new mongoose.Schema({
+  name: String,
+  email: { type: String, required: true, unique: true },
+  age: Number
+});
+
+// Create a model
+const User = mongoose.model('User', userSchema);
+
+// Use the model to interact with the database
+async function createUser() {
+  const user = new User({
+    name: 'John',
+    email: 'john@example.com',
+    age: 30
+  });
+  
+  await user.save();
+}
+```
+
+**Q: What are the CRUD operations and how do you implement them with MongoDB?**
+A: CRUD stands for Create, Read, Update, Delete:
+
+```javascript
+// CREATE
+async function createUser(userData) {
+  const user = new User(userData);
+  return await user.save();
+}
+
+// READ
+async function getUsers() {
+  return await User.find({});
+}
+
+async function getUserById(id) {
+  return await User.findById(id);
+}
+
+// UPDATE
+async function updateUser(id, updates) {
+  return await User.findByIdAndUpdate(id, updates, { new: true });
+}
+
+// DELETE
+async function deleteUser(id) {
+  return await User.findByIdAndDelete(id);
+}
+```
+
+## General React Questions
+
+**Q: What is the virtual DOM and how does it work?**
+A: The virtual DOM is a lightweight JavaScript representation of the actual DOM. When state changes:
+1. React creates a new virtual DOM tree
+2. It compares (diffs) it with the previous virtual DOM
+3. It calculates the minimal set of changes needed
+4. It applies only those changes to the real DOM
+
+This approach is more efficient than directly manipulating the DOM for every change.
+
+**Q: Explain the concept of React Fiber.**
+A: React Fiber is a reimplementation of React's core algorithm that enables:
+- Splitting rendering work into chunks
+- Prioritizing updates (high vs. low priority)
+- Pausing, resuming, or abandoning work in progress
+- Improved error handling with error boundaries
+- Better support for async rendering
+
+It makes React more responsive by allowing it to interrupt work and come back to it later.
+
+**Q: What are Higher-Order Components (HOCs) and when would you use them?**
+A: A Higher-Order Component is a function that takes a component and returns a new component with additional props or behavior:
+```jsx
+function withAuth(WrappedComponent) {
+  return function(props) {
+    if (isAuthenticated()) {
+      return <WrappedComponent {...props} />;
+    }
+    return <Redirect to="/login" />;
+  };
+}
+
+const ProtectedRoute = withAuth(MyComponent);
+```
+
+Use HOCs for:
+- Code reuse (shared functionality)
+- Cross-cutting concerns like authentication, logging
+- Props manipulation or injection
+- State abstraction and manipulation
+
+**Q: Compare React's Context API with state management libraries like Redux.**
+A: Context API:
+- Built into React
+- Simpler for basic cases
+- No extra libraries needed
+- Best for low-frequency updates and theme/user preferences
+- Can become unwieldy for complex state
+
+Redux:
+- More structured approach
+- Better for complex state logic
+- Time-travel debugging and dev tools
+- Middleware support
+- Better for large applications with many state transitions
+- Easier to test
+
+**Q: What are the performance optimization techniques in React?**
+A: - Memoization with React.memo to prevent unnecessary re-renders
+   - Using useCallback to memoize event handlers
+   - Using useMemo to memoize expensive calculations
+   - Virtualization for long lists (react-window, react-virtualized)
+   - Code splitting with React.lazy and Suspense
+   - Proper use of keys for lists
+   - Avoiding inline function definitions in render
+   - Using production builds
+   - Analyzing performance with React DevTools Profiler
+
+These techniques help minimize unnecessary renders and optimize computation-heavy operations.
