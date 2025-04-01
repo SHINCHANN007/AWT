@@ -1,0 +1,164 @@
+ PRACTICAL 1
+
+Aim : Components & properties
+
+ Q.1 Using properties in Class Component
+
+ Q2 Using properties in Functional Components
+
+__________________________________________
+
+ PRACTICAL 2
+Aim: Using states in class component 
+
+Q1. Updating message using state 
+
+Q2. Create a counter in ReacJS 
+
+__________________________________________
+
+ PRACTICAL 3
+
+Aim: Using States in Functional component 
+
+Q1. Create counter using useState Hook 
+
+Q2. Increment the age using useReducer Hook
+
+__________________________________________
+
+ PRACTICAL 4
+
+Aim: Mouting, Updating and UnMounting Component 
+A) Mounting Component 
+B) Updating Component
+C) UnMouting Component
+
+
+__________________________________________
+
+ PRACTICAL 5
+
+Aim: Event Handling 
+Q1) Define a form submission event handler using an arrow function that prevents the default 
+form submission behavious using event.preventDefault(). Update the input value using hte 
+handleInputChange function, which is called on every input change 
+
+Q2) Define a keydown event handler using an arrow function that cheks if the Enter key is 
+pressed and logs the input value to the console. Update the input balue using the 
+handleInputChange function, which is called on every input change event 
+
+Q3) Take an input field to add an element into array using state
+
+Q4) Take a button to add user, remove user and add user after specific element 
+
+__________________________________________
+
+ PRACTICAL 6
+
+Aim: Using useEffect Hook 
+Q1) Countdown timer with useEffect 
+
+Q2) Window Resize listener using seEffect 
+Create a WindowSize component that listents to the window’s resize event and displays the 
+current window size. Use the useEffect hook to add and remove the event listener on mount 
+and unmount, respectively 
+
+Q3) Form Input Validation with useEffect 
+Create a ValidatedInput component that validates user input and shows an error message if 
+the input is invalid. Use the useEffect hook to perform validation whenever the input value 
+changes, simulating componentDidUpdate behavior. 
+
+Q4) Data Fetching using useEffect 
+Create a UserPosts component that fetches and displays a list of posts using the 
+JSONPlaceholder API (https://jsonplaceholder.typicode.com/)
+
+
+__________________________________________
+
+ PRACTICAL 7
+
+Aim: A. Using useRef Hook 
+          B. Use the useContext hook to share the shopping cart state across component. 
+Q1. Develop a React application that includes a form with input fields for username and 
+email address. Implement functionality to automatically focus on username input field when 
+the page loads 
+
+Q2. Develop a React component called FormWithRef that implements a form with input 
+fields for username and email. Use the useRef hook to persist mutable values for these inputs 
+and to store the submitted data. The form should log the submitted data to the console when 
+the user submits the form 
+
+Q3. Develop a React application that demonstrates parent child interaction using the 
+useImperativeHandle hook. Create a parent component and a child component. The child 
+component should have a method that, when called by parent component, displays a message.
+
+__________________________________________
+
+ PRACTICAL 8
+
+Aim: React Routing 
+Implement routing using React Router 
+a) Create a three main pages. Home, Aobuot and Contact. Each page should have a unique 
+URL path. Implement navigation links to switch between the pages 
+b) Implement nested routing. Let contact component have two nested links, Add and Display 
+contact 
+
+
+
+__________________________________________
+
+ PRACTICAL 9
+
+Aim: Perform the following operations in Node.js 
+i)  Reading a file
+ii) Writing a file 
+
+Reading a file 
+a) Synchronously reads the entire contents of a file 
+b) Asynchronously reads the entire contents of a file 
+c) Read the file content in async function 
+
+
+Writing a file 
+1 Create a file example.txt 
+2 Add some content to it. Read the file 
+3 Append data to the file  
+4 Rename the file 
+5 Read the file again after appending 
+6 Delete the file 
+
+
+
+Create a node.js program that allows user to input text via the command line. Once the user 
+enters the text, the program should save the input into a file named text.txt. Additionally, the 
+program should emit a custom event indicating that the text is ready for processing 
+
+
+Create a simple node.js program that creates an HTTP server and handles requests to it 
+__________________________________________
+
+ PRACTICAL 10
+
+Aim: Creating Server using express and handling HTTP methods 
+
+Q1) Creating a Node.js program using Express that servers a list of users from JSON file. The 
+program should define an API endpoint to retrieve the details of users in JSON format. 
+
+a. Display details of all users 
+
+b. Diplsay details based on its parameters such as id
+
+c. Add a new user in JSON file and send a response 
+
+d. Update the name of user using a parameter such as id
+
+d. Delete a user based on the id in the parameter. Send a response after delete operation 
+
+Q2) Connect nidejs with MongoDB 
+a. Create Database 
+b. Create Collection
+
+
+
+__________________________________________

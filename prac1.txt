@@ -1,0 +1,91 @@
+ Q.1 Using properties in Class Component
+
+ To access properties in class use this.props.attributename
+ Data can be passed from Parent to Child component.
+
+
+Classprops.js-----
+
+import React, { Component } from "react";
+
+class Parent extends Component {
+  render() {
+    return (
+      <div>
+        <h1>This is Parent Class located at {this.props.address}</h1>
+        <Child p_name="Anurag" p_rollno="49" />
+      </div>
+    );
+  }
+}
+
+class Child extends Component {
+  render() {
+    return (
+      <div>
+        <h2>
+          {this.props.p_name}, Rollno: {this.props.p_rollno}
+        </h2>
+      </div>
+    );
+  }
+}
+
+export { Parent, Child };
+
+
+App.js----------
+
+import { Parent, Child } from "./Classprops.js";
+import './App.css';
+
+function App() {
+  return (
+    <div>
+      <Parent address="123 address" />
+    </div>
+  );
+}
+
+export default App;
+
+__________________________________________________________________________________
+
+
+ Q2 Using properties in Functional Component
+
+
+Funcprops.js-------------
+
+import React from "react";
+
+export const Book = (props) => {
+  return <h2>I am a {props.name} by {props.author}</h2>;
+};
+
+export const Product = () => {
+  return (
+    <div>
+      <h1>Book details</h1>
+      <Book name="Geronimo Stilton" author="Elisabetta Dami" />
+    </div>
+  );
+};
+
+
+
+App.js----------------------
+
+import { Book, Product } from "./Funcprops.js";
+import './App.css';
+
+function App() {
+  return (
+    <div>
+      <Product />
+    </div>
+  );
+}
+
+export default App;
+

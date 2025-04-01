@@ -1,0 +1,163 @@
+Aim: React Routing 
+Implement routing using React Router 
+a) Create a three main pages. Home, Aobuot and Contact. Each page should have a unique 
+URL path. Implement navigation links to switch between the pages 
+b) Implement nested routing. Let contact component have two nested links, Add and Display 
+contact 
+
+//Pr8_Home.jsx
+import React from 'react';
+
+export default function Anurag_Pr8Home() {
+    return (
+        <div>
+            <h1>Anurag_Pr8Home</h1>
+            <h3>This is a home page</h3>
+        </div>
+    );
+}
+
+
+
+//Pr8_About.jsx
+
+import React from 'react';
+
+export default function Anurag_Pr8About() {
+    return (
+        <div>
+            <h1>Anurag_Pr8About</h1>
+            <h3>This is an about page</h3>
+        </div>
+    );
+}
+
+
+
+//Pr8_Contact.jsx
+
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+export default function Anurag_Pr8Contact() {
+    return (
+        <div>
+            <h1>Anurag_Pr8Contact</h1>
+            <ul>
+                <li><Link to="/add">Add Contact</Link></li>
+                <li><Link to="/view">View Contact</Link></li>
+            </ul>
+            <h3>This is a contact page</h3>
+        </div>
+    );
+}
+
+
+
+//Pr8_AddContact.jsx
+
+import React, { useState } from 'react';
+
+export default function Anurag_Pr8_AddContact({ contacts, setContacts }) {
+    const [contact, setContact] = useState(null);
+    return (
+        <div>
+            <h1>Add Contact</h1>
+            <input
+                type='number'
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+            />
+            <br />
+            <button
+                onClick={() => {
+                    setContacts([...contacts, contact]);
+                    alert("Contact Added");
+                    setContact("");
+                }}
+            >
+                Add Contact
+            </button>
+        </div>
+    );
+}
+
+
+
+//Pr8_ViewContact.jsx
+
+import React from 'react';
+
+export default function Anurag_Pr8_ViewContact({ contacts }) {
+    return (
+        <div>
+            <h1>Contacts</h1>
+            <ul>
+                {contacts.map((val, index) => (
+                    <li key={index}>
+                        {val}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+}
+
+
+//Error.jsx
+
+import React from 'react'
+
+const Error = () => {
+  return (
+    <div>
+      
+    </div>
+  )
+}
+
+export default Error
+
+
+
+//App.jsx
+
+import { useState } from 'react';
+import Anurag_Pr8About from './comp/Pr8About';
+import Anurag_Pr8Contact from './comp/Pr8Contact';
+import Anurag_Pr8Home from './comp/Pr8Home';
+import Anurag_Pr8_AddContact from './comp/Pr8_AddContact';
+import Anurag_Pr8_ViewContact from './comp/Pr8_ViewContact';
+import Anurag_Pr8Error from './comp/Error'
+import { Routes, Route, Link } from 'react-router-dom';
+import './App.css';
+
+import Anurag_Pr8Error from './comp/Anurag_Pr8Error';
+
+function App() {
+    const [contacts, setContacts] = useState([]);
+
+    return (
+        <>
+            <h1>Anurag Sandeep Joshi 248649</h1>
+            <nav>
+                <ul>
+                    <li><Link to="/">Home</Link></li>
+                    <li><Link to="/about">About</Link></li>
+                    <li><Link to="/contact">Contact</Link></li>
+                </ul>
+            </nav>
+            <Routes>
+                <Route path='/' element={<Anurag_Pr8Home />} />
+                <Route path='about' element={<Anurag_Pr8About />} />
+                <Route path='contact' element={<Anurag_Pr8Contact />}>
+                </Route>
+                <Route path='add' element={<Anurag_Pr8_AddContact contacts={contacts} setContacts={setContacts} />} />
+                <Route path='view' element={<Anurag_Pr8_ViewContact contacts={contacts} />} />
+                <Route path='*' element={<Anurag_Pr8Error />} />
+            </Routes>
+        </>
+    );
+}
+
+export default App;

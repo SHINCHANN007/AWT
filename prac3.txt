@@ -1,0 +1,86 @@
+Q1. Create counter using useState Hook 
+
+// Anurag49_Counter.jsx
+import React, { useState } from 'react';
+
+function Anurag49_Counter() {
+    const [count, setCount] = useState(0);
+
+    return (
+        <div>
+            <h1>{count}</h1>
+            <br />
+            <button onClick={() => setCount(count => count + 1)}>Increment</button>
+            <button onClick={() => setCount(count => count - 1)}>Decrement</button>
+        </div>
+    );
+}
+
+export default Anurag49_Counter;
+
+
+// App.jsx
+import './App.css';
+import Anurag49_Counter from './Prac3/Anurag49_Counter';
+
+function App() {
+    return (
+        <>
+            <h1>Anurag49 248649</h1>
+            <Anurag49_Counter />
+            
+        </>
+    );
+}
+
+export default App;
+
+Q2. Increment the age using useReducer Hook---------------------------------------------
+
+
+// Anurag49_Age.jsx
+import React, { useReducer } from 'react';
+
+function Anurag49_Age() {
+    const reducer = (state, action) => {
+        if (action.type === "inc") {
+            if (state.age >= 50) {
+                alert("Limit Exceeded");
+                return state;
+            }
+            return {
+                age: state.age + 1
+            };
+        }
+        return state;
+    };
+
+    const [state, dispatch] = useReducer(reducer, { age: 43 });
+
+    return (
+        <div>
+            <h1>{state.age}</h1>
+            <br />
+            <button onClick={() => dispatch({ type: "inc" })}>Increment</button>
+            
+        </div>
+    );
+}
+
+export default Anurag49_Age;
+
+
+// App.jsx
+import './App.css';
+import Anurag49_Age from './Prac3/Anurag49_Age';
+
+function App() {
+    return (
+        <>
+            <h1>Anurag49 248637</h1>
+            <Anurag49_Age />
+        </>
+    );
+}
+
+export default App;

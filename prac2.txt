@@ -1,0 +1,102 @@
+Q1. Updating message using state 
+
+// Anurag49_Message.jsx
+import React, { Component } from 'react';
+
+class Anurag49_Message extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            message: "Hello World",
+            newMessage: ""
+        };
+    }
+
+    changeMessage = () => {
+        this.setState({ message: this.state.newMessage });
+    };
+
+    render() {
+        return (
+            <div>
+                <h1>{this.state.message}</h1>
+                <br /><br />
+                <input
+                    type="text"
+                    placeholder="New Message"
+                    value={this.state.newMessage}
+                    onChange={(e) => this.setState({ newMessage: e.target.value })}
+                />
+                <button onClick={this.changeMessage}>Change</button>
+                Anurag49 248637
+                Mulund College of Commerce (Autonomous) Advance Web Technologies
+            </div>
+        );
+    }
+}
+
+export default Anurag49_Message;
+
+
+// App.jsx
+import './App.css';
+import Anurag49_Message from './Prac2/Anurag49_Message';
+
+function App() {
+    return (
+        <>
+            <h1>Anurag49 248637</h1>
+            <Anurag49_Message />
+        </>
+    );
+}
+
+export default App;
+
+
+Q2. Create a counter in ReacJS---------------------------------
+
+
+// Anurag49_Counter.jsx
+import React, { Component } from 'react';
+
+class Anurag49_Counter extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            count: 1
+        };
+    }
+
+    increment = () => {
+        this.setState((prevState) => ({ count: prevState.count + 1 }));
+    };
+
+    render() {
+        return (
+            <div>
+                <h1>{this.state.count}</h1>
+                <br />
+                <button onClick={this.increment}>Increment</button>
+            </div>
+        );
+    }
+}
+
+export default Anurag49_Counter;
+
+
+// App.jsx
+import './App.css';
+import Anurag49_Counter from './Prac2/Anurag49_Counter';
+
+function App() {
+    return (
+        <>
+            <h1>Anurag49 248637</h1>
+            <Anurag49_Counter />
+        </>
+    );
+}
+
+export default App;

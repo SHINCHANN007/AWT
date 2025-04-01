@@ -1,0 +1,157 @@
+Aim: 	  A. Using useRef Hook 
+          B. Use the useContext hook to share the shopping cart state across component. 
+
+Q1. Develop a React application that includes a form with input fields for username and 
+email address. Implement functionality to automatically focus on username input field when 
+the page loads 
+
+//Pr7Q1.jsx
+import React, { useRef } from 'react';
+
+export default function Anurag_Pr7Q1() {
+    const unameRef = useRef(null);
+
+    return (
+        <div>
+            <input type='text' placeholder='Automatically focuses' ref={unameRef} />
+            <br />
+            <button onClick={() => unameRef.current.focus()}>Focus</button>
+        </div>
+    );
+}
+
+
+//app.jsx
+
+import { useState } from 'react';
+import Anurag_Pr7Q1 from './comp/Pr7Q1';
+import './App.css';
+
+function App() {
+    return (
+        <>
+            <h1>Anurag  248649</h1>
+            <Anurag_Pr7Q1 />
+        </>
+    );
+}
+
+export default App;
+
+
+--------------------------------------------------------------------------------------
+
+Q2. Develop a React component called FormWithRef that implements a form with input 
+fields for username and email. Use the useRef hook to persist mutable values for these inputs 
+and to store the submitted data. The form should log the submitted data to the console when 
+the user submits the form 
+
+//Pr7Q2.jsx
+
+import React, { useRef } from 'react';
+
+export default function Anurag_Pr7Q2() {
+    const unameRef = useRef("");
+    const emailRef = useRef("");
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log("Username: " + unameRef.current.value);
+        console.log("Email: " + emailRef.current.value);
+        unameRef.current.value = "";
+        emailRef.current.value = "";
+    };
+
+    return (
+        <div>
+            <form onSubmit={handleSubmit}>
+                <input type='text' placeholder='Enter Username' ref={unameRef} />
+                <br />
+                <input type='text' placeholder='Enter Email' ref={emailRef} />
+                <br />
+                <input type='submit' />
+            </form>
+        </div>
+    );
+}
+
+
+//app.jsx
+
+import { useState } from 'react';
+import Anurag_Pr7Q2 from './comp/Pr7Q2';
+import './App.css';
+
+function App() {
+    return (
+        <>
+            <h1>Anurag 248649</h1>
+            <Anurag_Pr7Q2 />
+        </>
+    );
+}
+
+export default App;
+
+--------------------------------------------------------------------------------------
+
+Q3. Develop a React application that demonstrates parent child interaction using the 
+useImperativeHandle hook. Create a parent component and a child component. The child 
+component should have a method that, when called by parent component, displays a message.
+
+//Pr7Q3.jsx
+
+import React, { useRef, forwardRef, useImperativeHandle } from 'react';
+
+const ChildComponent = forwardRef((props, ref) => {
+    const greetParent = () => {
+        console.log("Hello From the child component");
+    };
+
+    useImperativeHandle(ref, () => ({
+        greetParent
+    }));
+
+    return (
+        <div>
+            <h2>Child Component</h2>
+        </div>
+    );
+});
+
+export default function Anurag_Pr7Q3() {
+    const childRef = useRef(null);
+
+    const handleButtonClick = () => {
+        childRef.current.greetParent();
+    };
+
+    return (
+        <div>
+            <h1>Parent Component</h1>
+            <button onClick={handleButtonClick}>Greet</button>
+            <ChildComponent ref={childRef} />
+        </div>
+    );
+}
+
+
+//app/jsx
+
+import { useState } from 'react';
+import Anurag_Pr7Q3 from './comp/Pr7Q3';
+import './App.css';
+
+function App() {
+    return (
+        <>
+            <h1>Anurag  248649</h1>
+            <Anurag_Pr7Q3 />
+        </>
+    );
+}
+
+export default App;
+
+
+--------------------------------------------------------------------------------------

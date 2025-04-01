@@ -1,0 +1,142 @@
+A) Mounting Component
+
+// Anurag49_Mounting.jsx
+import React, { Component } from 'react';
+
+class Anurag49_Mounting extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { name: "Anurag" };
+    }
+
+    componentDidMount() {
+        setTimeout(() => {
+            alert("Component Mounted");
+            this.setState({ name: "Anurag49" });
+        }, 5000);
+    }
+
+    render() {
+        return (
+            <div>
+                <h1>Name: {this.state.name}</h1>
+            </div>
+        );
+    }
+}
+
+export default Anurag49_Mounting;
+
+
+
+// App.jsx
+import './App.css';
+import Anurag49_Mounting from './Prac4/Anurag49_Mounting';
+
+function App() {
+    return (
+        <>
+            <h1>Anurag49 248637</h1>
+            <Anurag49_Mounting />
+        </>
+    );
+}
+
+export default App;
+
+
+-------------------------------------------------------------
+
+B) Updating Component
+
+// Anurag49_Updating.jsx
+import React, { Component } from 'react';
+
+class Anurag49_Updating extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { count: 0 };
+    }
+
+    componentDidUpdate() {
+        setTimeout(() => {
+            alert("Component Updated");
+        }, 2000);
+    }
+
+    render() {
+        return (
+            <div>
+                <h2>Count: {this.state.count}</h2>
+                <br />
+                <button onClick={() => {
+                    this.setState({ count: this.state.count + 1 })
+                }}>
+                    Increment
+                </button>
+             </div>
+        );
+    }
+}
+
+export default Anurag49_Updating;
+
+
+// App.jsx
+import './App.css';
+import Anurag49_Updating from './Prac4/Anurag49_Updating';
+
+function App() {
+    return (
+        <>
+            <h1>Anurag49</h1>
+            <Anurag49_Updating />
+        </>
+    );
+}
+
+export default App;
+
+------------------------------------------------------------------------------
+
+C) UnMouting Component 
+
+// Anurag49_UnMounting.jsx
+import React, { Component } from 'react';
+
+class Anurag49_UnMounting extends Component {
+    componentWillUnmount() {
+        alert("Component UnMounted");
+    }
+
+    render() {
+        return (
+            <div>
+                <h1>Component to be UnMounted</h1>
+                
+            </div>
+        );
+    }
+}
+
+export default Anurag49_UnMounting;
+
+// App.jsx
+import './App.css';
+import Anurag49_UnMounting from './Prac4/Anurag49_UnMounting';
+import { useState } from 'react';
+
+function App() {
+  const [toggle, setToggle] = useState(false);
+  
+  return (
+    <>
+      <h1>Anurag49 248637</h1>
+      {toggle ? <h2>Component UnMounted</h2> : <Anurag49_UnMounting />}
+      <br />
+      <button onClick={() => { setToggle(true) }}>UnMount</button>
+    </>
+  );
+}
+
+export default App;

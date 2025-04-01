@@ -1,0 +1,185 @@
+Q1) Define a form submission event handler using an arrow function that prevents the default 
+form submission behavious using event.preventDefault(). Update the input value using hte 
+handleInputChange function, which is called on every input change 
+
+// Anurag49_Pr5Q1.jsx
+import React, { useState } from 'react' 
+export default function Anurag49_Pr5Q1() { 
+    const [input, setInput] = useState(""); 
+    const handleSubmit = (e) => { 
+        e.preventDefault() 
+        alert(`Form Submitted with value ${input}`) 
+    } 
+    return ( 
+        <div> 
+            <form onSubmit={handleSubmit}> 
+                <input value={input} onChange={(e) => { setInput(e.target.value) }} /> <br /> 
+                <p>{input}</p> <br /> 
+                <button type="submit">Submit</button> 
+            </form> 
+        </div> 
+    ) 
+}
+
+// App.jsx
+import { useState } from 'react' 
+import Anurag49_Pr5Q1 from './comp/Anurag49_Pr5Q1' 
+import './App.css' 
+function App() { 
+  const [count, setCount] = useState(0) 
+Anurag49 248637 
+return ( 
+<> 
+<h1>Anurag49 248637</h1> 
+<Anurag49_Pr5Q1 /> 
+</> 
+) 
+} 
+export default App
+
+---------------------------------------------------------------------
+
+Q2) Define a keydown event handler using an arrow function that cheks if the Enter key is 
+pressed and logs the input value to the console. Update the input balue using the 
+handleInputChange function, which is called on every input change event
+
+// Anurag49_Pr5Q2.jsx
+import React, { useState } from 'react' 
+
+export default function Anurag49_Pr5Q2() { 
+    const [input, setInput] = useState("") 
+    const handleInputChange = (e) => { 
+        setInput(e.target.value) 
+    } 
+    return ( 
+        <div> 
+            <form onSubmit={(e) => e.preventDefault()}> 
+                <input type="text" value={input} onChange={handleInputChange} 
+onKeyDown={(e) => { 
+                    if (e.key === "Enter") { 
+                        alert("Enter Key Pressed") 
+                        console.log(input) 
+                    } 
+                }} /> <br /> 
+                <p>{input}</p> 
+            </form> 
+        </div> 
+    ) 
+}
+
+// App.jsx
+import { useState } from 'react' 
+import Anurag49_Pr5Q2 from './comp/Anurag49_Pr5Q2' 
+import './App.css' 
+function App() { 
+  const [count, setCount] = useState(0) 
+
+
+return ( 
+<> 
+<h1>Anurag49</h1> 
+<Anurag49_Pr5Q2 /> 
+</> 
+) 
+} 
+export default App
+-------------------------------------------------------------------------------------
+
+Q3) Take an input field to add an element into array using state 
+
+// Anurag49_Pr5Q3.jsx
+import React, { useState } from 'react' 
+export default function Anurag49_Pr5Q3() { 
+    const [arr, setArr] = useState([]) 
+    const [input, setInput] = useState('') 
+    const addToArray = () => { 
+        alert("added") 
+        setArr([...arr, input]) 
+    } 
+    return ( 
+        <div> 
+            <input type="text" value={input} onChange={(e) => setInput(e.target.value)} /> 
+            <button onClick={addToArray}>Add</button><br /> 
+            <ul> 
+                {arr.map((item, index) => <li key={index}>{item}</li>)} 
+            </ul> 
+        </div> 
+    ) 
+}
+
+// App.jsx
+import { useState } from 'react' 
+import Anurag49_Pr5Q3 from './comp/Anurag49_Pr5Q3' 
+import './App.css' 
+function App() { 
+  return ( 
+    <> 
+      <h1>Anurag49 248637</h1> 
+      <Anurag49_Pr5Q3 /> 
+    </> 
+  ) 
+} 
+export default App 
+
+
+--------------------------------------------------------------------------------
+
+Q4) Take a button to add user, remove user and add user after specific element 
+
+// Pr5Q4.jsx
+import React, { useState } from 'react' 
+export default function Pr5Q4() { 
+    const [friends, setFriends] = useState([]); 
+    const [input, setInput] = useState(""); 
+    const [index, setIndex] = useState(""); 
+    const [deleteCount, setDeleteCount] = useState(""); 
+    const addFriend = () => { 
+        if (index === "") { 
+            setFriends([...friends, input]) 
+        } else { 
+            const newFriends = friends; 
+            newFriends.splice(parseInt(index), 0, input); 
+            setFriends(newFriends); 
+        } 
+    } 
+    const deleteFriend = () => { 
+        if (index == "") { 
+            alert("Please provide index") 
+            return 
+        } else if (deleteCount == "") { 
+            alert("Please provide count") 
+        } 
+        const newFriends = friends; 
+        newFriends.splice(parseInt(index), parseInt(deleteCount)); 
+        setFriends(newFriends); 
+    } 
+    return ( 
+        <div> 
+            <input type="text" value={input} onChange={(e) => setInput(e.target.value)} 
+placeholder='Friend Name' /> 
+            <input type="text" value={index} onChange={(e) => setIndex(e.target.value)} 
+placeholder="Index" /> 
+            <input type='text' value={deleteCount} onChange={(e) => 
+setDeleteCount(e.target.value)} placeholder="Delete Count" /> 
+            <button onClick={addFriend}>Add Friend</button> 
+            <button onClick={deleteFriend}>Delete Friend</button> 
+            <ul> 
+                {friends.map((item, index) => <li key={index}>{item}</li>)} 
+            </ul> 
+        </div> 
+    ) 
+}
+
+// App.jsx
+import { useState } from 'react' 
+import Pr5Q4 from './comp/Pr5Q4' 
+import './App.css' 
+function App() { 
+return ( 
+<> 
+<h1>Anurag49 248637</h1> 
+<Pr5Q4 /> 
+</> 
+) 
+} 
+export default App
